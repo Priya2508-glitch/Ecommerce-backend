@@ -8,7 +8,6 @@ on:
         required: true
         default: "develop"
 
-
 jobs:
   build-and-test:
     name: Build and Test Backend
@@ -21,7 +20,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 22
           cache: npm
 
   deploy:
@@ -53,6 +52,18 @@ jobs:
             git checkout develop
             git reset --hard origin/develop
 
+            echo "Removing old build..."
+
+            rm -rf dist/
+
+            echo "Removing old node_modules..."
+
+            rm -rf node_modules/
+
+            echo "Listing project files..."
+
+            ls -la
+
             echo "Installing dependencies..."
 
             npm ci
@@ -82,7 +93,5 @@ jobs:
             echo "================================="
 
             echo "PM2 status:"
+
             pm2 status
-
-
-
