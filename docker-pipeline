@@ -2,6 +2,17 @@ name: Docker Build and Push to ECR
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: "Select branch to build and push"
+        required: true
+        default: "fix/docker-build"
+        type: choice
+        options:
+          - fix/docker-build
+          - develop
+          - main
+
 
 jobs:
   build-and-push:
