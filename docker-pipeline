@@ -1,11 +1,7 @@
-name: Build and Push Docker Image to ECR
+name: Docker Build and Push to ECR
 
 on:
   workflow_dispatch:
-
-permissions:
-  id-token: write
-  contents: read
 
 jobs:
   build-and-push:
@@ -13,35 +9,30 @@ jobs:
 
     steps:
 
-      # 1. Checkout source code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Authenticate GitHub Actions with AWS using OIDC
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v5
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::998493219222:role/YOUR_IAM_ROLE_NAME
-          aws-region: ap-southeast-2
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-      # 3. Login Docker to Amazon ECR
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      # 4. Build Docker image
       - name: Build Docker image
         run: |
-          docker build -t ecommerce-app-ecr:latest .
+          docker build -t ecommerce-backend .
 
-      # 5. Tag Docker image
       - name: Tag Docker image
         run: |
-          docker tag ecommerce-app-ecr:latest \
-            998493219222.dkr.ecr.ap-southeast-2.amazonaws.com/ecommerce-app-ecr:latest
+          docker tag ecommerce-backend:latest \
+          998493219222.dkr.ecr.ap-southeast-2.amazonaws.com/ecommerce-backend:latest
 
-      # 6. Push Docker image to ECR
-      - name: Push Docker image
+      - name: Push Docker image to ECR
         run: |
           docker push \
-            998493219222.dkr.ecr.ap-southeast-2.amazonaws.com/ecommerce-app-ecr:latest
+          998493219222.dkr.ecr.ap-southeast-2.amazonaws.com/ecommerce-backend:latest
