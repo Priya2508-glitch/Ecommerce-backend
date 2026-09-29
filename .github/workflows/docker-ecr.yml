@@ -41,9 +41,9 @@ jobs:
       - name: Tag Docker image
         run: |
           docker tag ecommerce-backend:latest \
-          998493219222.dkr.ecr.ap-southeast-2.amazonaws.com/ecommerce-backend:latest
+          998493219222.dkr.ecr.ap-southeast-2.amazonaws.com/ecommerce-app-ecr:latest
 
       - name: Push Docker image to ECR
         run: |
           docker push \
-          998493219222.dkr.ecr.ap-southeast-2.amazonaws.com/ecommerce-backend:latest
+          998493219222.dkr.ecr.ap-southeast-2.amazonaws.com/ecommerce-app-ecr:latest
